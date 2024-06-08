@@ -7,7 +7,7 @@ export default function App() {
   const [currentNumber, setCurrentNumber] = useState("");
   const [lastNumber, setLastNumber] = useState("");
 
-  function calculator() {
+  function calculateResult() {
     const splitNumbers = currentNumber.split(' ');
     const firstNumber = parseFloat(splitNumbers[0]);
     const secondNumber = parseFloat(splitNumbers[2]);
@@ -15,33 +15,31 @@ export default function App() {
 
     switch (operator) {
       case '+':
-        setCurrentNumber((firstNumber + secondNumber).toString());
-        break;
+        return (firstNumber + secondNumber).toLocaleString();
       case '-':
-        setCurrentNumber((firstNumber - secondNumber).toString());
-        break;
+        return (firstNumber - secondNumber).toLocaleString();
       case 'x':
-        setCurrentNumber((firstNumber * secondNumber).toString());
-        break;
+        return (firstNumber * secondNumber).toLocaleString();
       case '/':
-        setCurrentNumber((firstNumber / secondNumber).toString());
-        break;
+        return (firstNumber / secondNumber).toLocaleString();
+      case '%':
+        return ((firstNumber / 100) * secondNumber).toLocaleString(); // Calcula a porcentagem corretamente
       default:
-        break;
+        return "";
     }
   }
 
   function handleInput(buttonPressed) {
     console.log(buttonPressed); // Mostra no Console a tecla pressionada
 
-    if (buttonPressed === '+' || buttonPressed === "-" || buttonPressed === "x" || buttonPressed === "/") {
+    if (buttonPressed === '+' || buttonPressed === "-" || buttonPressed === "x" || buttonPressed === "/" || buttonPressed === "%") {
       setCurrentNumber(currentNumber + " " + buttonPressed + " ");
       return;
     }
 
     switch (buttonPressed) {
       case 'DEL':
-        setCurrentNumber(currentNumber.substring(0, (currentNumber.length - 1)));
+        setCurrentNumber(currentNumber.substring(0, currentNumber.length - 1));
         return;
       case 'LIMPAR':
         setLastNumber("");
@@ -49,10 +47,10 @@ export default function App() {
         return;
       case '=':
         setLastNumber(currentNumber + " = ");
-        calculator();
+        setCurrentNumber(calculateResult());
         return;
       case '+/-':
-        // Implementar a lógica para mudar o sinal do número atual
+        setCurrentNumber((parseFloat(currentNumber) * -1).toString());
         return;
       default:
         setCurrentNumber(currentNumber + buttonPressed);
